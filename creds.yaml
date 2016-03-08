@@ -1,0 +1,7 @@
+### Supervisor Example Configuration
+cbserverapi:
+   hostname: your.hostname.here
+   username: cb
+   password: yourpasswordhere
+   port: 5004 #probably
+
