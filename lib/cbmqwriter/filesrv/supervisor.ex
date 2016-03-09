@@ -7,7 +7,7 @@ defmodule CBMQWriter.Filesrv.Supervisor do
 
   def init([]) do
     children = [
-      worker(CBMQWriter.Filesrv.Worker, [], restart: :transient)
+      worker(CBMQWriter.Filesrv.Worker, [], restart: :permanent)
     ]
     supervise(children, strategy: :simple_one_for_one)
   end
