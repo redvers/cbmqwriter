@@ -20,14 +20,15 @@ defmodule CBMQWriter do
     returnme = Supervisor.start_link(children, opts)
 
     [
-      "ingress.event.procstart",
-      "ingress.event.procend",
-      "ingress.event.childproc",
-      "ingress.event.moduleload",
-      "ingress.event.module",
-      "ingress.event.filemod",
-      "ingress.event.regmod",
-      "ingress.event.netconn"
+#      "ingress.event.procstart",
+#      "ingress.event.procend",
+#      "ingress.event.childproc",
+#      "ingress.event.moduleload",
+#      "ingress.event.module",
+#      "ingress.event.filemod",
+#      "ingress.event.regmod",
+#      "ingress.event.netconn"
+      "#"
     ]
 
     |> Enum.map(&spawn_event_stream/1)
@@ -38,7 +39,6 @@ defmodule CBMQWriter do
 
   def spawn_event_stream(eventstream) do
     Supervisor.start_child(Cbserverapi2.Connection.Supervisor, [eventstream,  &to_sensor/1, &CBMQWriter.Creds.creds/0])
-    :ets.insert(:appstats, {eventstream, 0, 0, 0})
   end
 
   def to_sensor({
@@ -55,14 +55,14 @@ defmodule CBMQWriter do
   def to_sensor({:"basic.consume_ok", _}) do IO.puts("Initialized") end
   def to_sensor(other) do end
 
-  def incoming_increment(eventtype) do
-    :ets.update_counter(:appstats, eventtype, {2,1})
+  def incoming_increment(sensorid) do
+    :ets.update_counter(:appstats, sensorid, {2,1})
   end
-  def increment_received(eventtype) do
-    :ets.update_counter(:appstats, eventtype, {3,1})
+  def increment_received(sensorid) do
+    :ets.update_counter(:appstats, sensorid, {3,1})
   end
-  def disk_increment(eventtype, count) do
-    :ets.update_counter(:appstats, eventtype, [{3, -count}, {4,count}])
+  def disk_increment(sensorid, count) do
+    :ets.update_counter(:appstats, sensorid, [{3, -count}, {4,count}])
   end
 
 
