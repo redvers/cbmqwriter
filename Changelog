@@ -1,0 +1,10 @@
+Notable changes
+===============
+
+It appears that ets was becoming a bottleneck when the instrumentation
+was enabled so changed the binary GC model from sensor GenServer termination
+to per-process GC with each file-write sync.
+
+As such, processes can now become permanent and automatically re-started
+and logged by their supervisor.
+
