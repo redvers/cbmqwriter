@@ -32,10 +32,9 @@ defmodule CBMQWriter.Filesrv.Worker do
   def sync_file(sensorid, {filebase, queue}) do
     [_, path, eventtype] = Regex.run(~r/(.*)\/([^\/]*)$/, filebase)
     File.mkdir_p(path)
-    binarylist = :queue.to_list(queue)
 
-    CBMQWriter.disk_increment(eventtype, Enum.count(binarylist))
-    CBMQWriter.File.append_chunks("#{filebase}.pbr", binarylist)
+    CBMQWriter.disk_increment(eventtype, Enum.count(queue))
+    CBMQWriter.File.append_chunks("#{filebase}.pbr", queue)
   end
 
 
@@ -44,9 +43,7 @@ defmodule CBMQWriter.Filesrv.Worker do
     gpath = generate_path(fullev)
     CBMQWriter.increment_received(eventtype)
 
-    newq  = :queue.in({eventtype, binary}, Map.get(state, gpath, :queue.new))
-    newstate = Map.put(state, gpath, newq)
-    {:noreply, newstate}
+    {:noreply, Map.put(state, gpath, [{eventtype, binary} | Map.get(state, gpath, [])])}
   end
 
   def handle_info({:sync, sensorid}, state) do
