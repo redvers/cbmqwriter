@@ -12,10 +12,6 @@ defmodule CBMQWriter.File do
     append_chunks(:f2, filename, binaries)
   end
 
-
-
-
-
   defp append_chunks(:f2, filename, binaries) do
     pid = openfile(filename)
     Enum.map(binaries, &(add_chunk(pid, assemble_chunk(&1))))

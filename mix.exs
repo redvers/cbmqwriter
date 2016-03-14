@@ -14,7 +14,7 @@ defmodule CBMQWriter.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:sasl, :logger, :yamerl, :cbserverapi2, :recon],
+    [applications: [:logger],
      mod: {CBMQWriter, []}]
   end
 
@@ -29,11 +29,6 @@ defmodule CBMQWriter.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [
-      {:yamerl, git: "https://github.com/yakaz/yamerl"},
-      {:cbserverapi2, git: "https://github.com/redvers/cbserverapi2.git"},
-      {:eep, git: "https://github.com/virtan/eep.git"},
-      {:exrm, "~> 1.0"},
-      {:recon, "~> 2.2"}
     ]
   end
 end
